@@ -1,0 +1,37 @@
+name: Microservices CI
+
+on:
+  pull_request:
+    branches:
+      - qa
+  push:
+    branches:
+      - main
+
+jobs:
+
+  product-catalogue:
+    if: contains(github.event.head_commit.message, 'product-catalogue')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+
+      - name: Run Tests & Coverage
+        run: |
+          cd ./src/productcatalog
+          go test ./... -coverprofile=coverage.out
+
+      - name: Sonar Scan
+        uses: sonarsource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_PRODUCT }}
+          SONAR_HOST_URL: http://localhost:9000
+
+        with:
+          projectBaseDir: ./src/productcatalog
+
