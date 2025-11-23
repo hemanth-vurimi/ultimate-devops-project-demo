@@ -1,42 +1,33 @@
-name: Microservices CI
+name: Build
 
 on:
-  pull_request:
-    branches:
-      - qa
   push:
     branches:
       - qa
 
 jobs:
- 
-  product-catalogue:
-    if: 
-        if: |
-          contains(github.event.pull_request.title, 'productcatalog') ||
-          contains(github.event.pull_request.body, 'productcatalog') ||
-          contains(github.event.head_commit.message, 'productcatalog')
-
+  build:
+    name: Build and analyze product-catalog
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: product-catalog   # 👈 Set working directory
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Install Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.22'
+      # Install Go dependencies (optional but recommended)
+      - name: Download Go dependencies
+        run: go mod download
 
-      - name: Run Tests & Coverage
-        run: |
-          cd ./src/productcatalog
-          go test ./... -coverprofile=coverage.out
-
-      - name: Sonar Scan
-        uses: sonarsource/sonarcloud-github-action@v2
+      - uses: SonarSource/sonarqube-scan-action@v6
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_PRODUCT }}
-          SONAR_HOST_URL: http://localhost:9000
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-        with:
-          projectBaseDir: ./src/product-catalog   
-
+      # Optional: Fail pipeline if Quality Gate fails
+      - uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
