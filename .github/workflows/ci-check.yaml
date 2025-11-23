@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: product-catalog   # 👈 Set working directory
+        working-directory: src/product-catalog  # 👈 Set working directory
 
     steps:
       - uses: actions/checkout@v4
