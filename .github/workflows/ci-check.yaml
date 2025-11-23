@@ -12,9 +12,11 @@ jobs:
  
   product-catalogue:
     if: 
-        contains(github.event.pull_request.title, 'product-catalogue') ||
-        contains(github.event.pull_request.body, 'product-catalogue') ||
-        contains(github.event.head_commit.message, 'product-catalogue')
+        if: |
+          contains(github.event.pull_request.title, 'productcatalog') ||
+          contains(github.event.pull_request.body, 'productcatalog') ||
+          contains(github.event.head_commit.message, 'productcatalog')
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
