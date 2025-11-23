@@ -11,11 +11,10 @@ on:
 jobs:
  
   product-catalogue:
-    if: 
-        if: |
-          contains(github.event.pull_request.title, 'productcatalog') ||
-          contains(github.event.pull_request.body, 'productcatalog') ||
-          contains(github.event.head_commit.message, 'productcatalog')
+      if: |
+        contains(github.event.pull_request.title, 'productcatalog') ||
+        contains(github.event.pull_request.body, 'productcatalog') ||
+        contains(github.event.head_commit.message, 'productcatalog')
 
     runs-on: ubuntu-latest
     steps:
