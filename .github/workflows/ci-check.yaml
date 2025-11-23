@@ -9,15 +9,13 @@ on:
       - qa
 
 jobs:
- 
   product-catalogue:
-    if: 
-        if: |
-          contains(github.event.pull_request.title, 'productcatalog') ||
-          contains(github.event.pull_request.body, 'productcatalog') ||
-          contains(github.event.head_commit.message, 'productcatalog')
-
+    if: |
+      contains(github.event.pull_request.title, 'productcatalog') ||
+      contains(github.event.pull_request.body, 'productcatalog') ||
+      contains(github.event.head_commit.message, 'productcatalog')
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -36,7 +34,5 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_PRODUCT }}
           SONAR_HOST_URL: http://localhost:9000
-
         with:
-          projectBaseDir: ./src/product-catalog   
-
+          projectBaseDir: ./src/productcatalog
