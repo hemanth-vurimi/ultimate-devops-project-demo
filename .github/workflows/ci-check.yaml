@@ -36,5 +36,5 @@ jobs:
           SONAR_HOST_URL: http://localhost:9000
 
         with:
-          projectBaseDir: ./src/productcatalog
+          projectBaseDir: ./src/product-catalog
 
