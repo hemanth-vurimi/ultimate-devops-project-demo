@@ -11,7 +11,10 @@ on:
 jobs:
 
   product-catalogue:
-    if: contains(github.event.head_commit.message, 'product-catalogue')
+    if: 
+        contains(github.event.pull_request.title, 'product-catalogue') ||
+        contains(github.event.pull_request.body, 'product-catalogue') ||
+        contains(github.event.head_commit.message, 'product-catalogue')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
