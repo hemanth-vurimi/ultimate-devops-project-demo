@@ -6,7 +6,7 @@ on:
       - qa
   push:
     branches:
-      - main
+      - qa
 
 jobs:
 
